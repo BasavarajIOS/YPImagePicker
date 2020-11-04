@@ -12,7 +12,7 @@ import UIKit
 import Photos
 
 /// Typealias for code prettiness
-open var YPConfig: YPImagePickerConfiguration { return YPImagePickerConfiguration.shared }
+public var YPConfig: YPImagePickerConfiguration { return YPImagePickerConfiguration.shared }
 
 public struct YPImagePickerConfiguration {
     public static var shared: YPImagePickerConfiguration = YPImagePickerConfiguration()
