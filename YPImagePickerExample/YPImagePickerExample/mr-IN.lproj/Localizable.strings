@@ -1,0 +1,23 @@
+/* 
+  Localizable.strings
+  YPImagePickerExample
+
+  Created by Sacha Durand Saint Omer on 20/07/2017.
+  Copyright © 2017 Octopepper. All rights reserved.
+*/
+"YPImagePickerPermissionDeniedPopupTitle" = "Permission denied";
+"YPImagePickerPermissionDeniedPopupMessage" = "Please allow access";
+"YPImagePickerPermissionDeniedPopupCancel" = "रद्द करा";
+"YPImagePickerPermissionDeniedPopupGrantPermission" = "Grant Permission";
+"YPImagePickerVideo" = "व्हिडिओ";
+"YPImagePickerCancel" = "रद्द करा";
+"YPKeepRecording" = "रॆकॉर्डिंग सुरु ठेवा";
+"preview" = "प्रीव्यू";
+"proceed" = "सुरु ठेवा";
+"restart" = "परत सुरु करा";
+"confirm_leave_recording_screen" = "आपल्याला रेकॉर्डिंग बंद करायचे आहे का?";
+"resume_recording" = "नाही, रॆकॉर्डिंग सुरु ठेवा";
+"recording_button_coachmark" = "रेकॉर्डिंग सुरू करण्यासाठी इथे क्लिक करा";
+"recording_cancel_coachmark" = "रेकॉर्डिंग पुन्हा सुरू करण्यासाठी येथे क्लिक करा";
+"recording_paused_coachmark" = "रेकॉर्डिंग चालू ठेवण्यासाठी इथे क्लिक करा";
+"save" = "सेव्ह करा";

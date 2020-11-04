@@ -107,6 +107,12 @@
 		3B0E1B962070669B0048E95B /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/YPImagePickerLocalizable.strings; sourceTree = "<group>"; };
 		4EA67521208A45080076D4E3 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/YPImagePickerLocalizable.strings; sourceTree = "<group>"; };
 		52412A931CA6114A0073C4BE /* YPImagePicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = YPImagePicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		554A69592552E0C200576AA2 /* te-IN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "te-IN"; path = "te-IN.lproj/YPImagePickerLocalizable.strings"; sourceTree = "<group>"; };
+		554A695C2552E0E600576AA2 /* ta-IN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ta-IN"; path = "ta-IN.lproj/YPImagePickerLocalizable.strings"; sourceTree = "<group>"; };
+		554A695F2552E0F900576AA2 /* bn-IN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "bn-IN"; path = "bn-IN.lproj/YPImagePickerLocalizable.strings"; sourceTree = "<group>"; };
+		554A69622552E10500576AA2 /* mr-IN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "mr-IN"; path = "mr-IN.lproj/YPImagePickerLocalizable.strings"; sourceTree = "<group>"; };
+		554A69652552E11300576AA2 /* kn-IN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "kn-IN"; path = "kn-IN.lproj/YPImagePickerLocalizable.strings"; sourceTree = "<group>"; };
+		554A69682552E15000576AA2 /* hi-IN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "hi-IN"; path = "hi-IN.lproj/YPImagePickerLocalizable.strings"; sourceTree = "<group>"; };
 		5F01F9DC20DCC494007432E4 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/YPImagePickerLocalizable.strings"; sourceTree = "<group>"; };
 		65BBCBAE2101BA4200277809 /* id */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = id; path = id.lproj/YPImagePickerLocalizable.strings; sourceTree = "<group>"; };
 		7157B4CA206FD7270004EF6C /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/YPImagePickerLocalizable.strings"; sourceTree = "<group>"; };
@@ -549,6 +555,13 @@
 				vi,
 				pl,
 				da,
+				hi,
+				"te-IN",
+				"ta-IN",
+				"bn-IN",
+				"mr-IN",
+				"kn-IN",
+				"hi-IN",
 			);
 			mainGroup = 52412A891CA6114A0073C4BE;
 			productRefGroup = 52412A941CA6114A0073C4BE /* Products */;
@@ -708,6 +721,12 @@
 				2577138223B1E09E00BB9C86 /* vi */,
 				78B58D3524C5DB5200B83153 /* pl */,
 				EB0D6FC2252F1FDC006EE12E /* da */,
+				554A69592552E0C200576AA2 /* te-IN */,
+				554A695C2552E0E600576AA2 /* ta-IN */,
+				554A695F2552E0F900576AA2 /* bn-IN */,
+				554A69622552E10500576AA2 /* mr-IN */,
+				554A69652552E11300576AA2 /* kn-IN */,
+				554A69682552E15000576AA2 /* hi-IN */,
 			);
 			name = YPImagePickerLocalizable.strings;
 			sourceTree = "<group>";

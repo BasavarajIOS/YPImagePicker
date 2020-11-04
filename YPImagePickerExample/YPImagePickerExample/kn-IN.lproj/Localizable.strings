@@ -1,0 +1,23 @@
+/* 
+  Localizable.strings
+  YPImagePickerExample
+
+  Created by Sacha Durand Saint Omer on 20/07/2017.
+  Copyright © 2017 Octopepper. All rights reserved.
+*/
+"YPImagePickerPermissionDeniedPopupTitle" = "Permission denied";
+"YPImagePickerPermissionDeniedPopupMessage" = "Please allow access";
+"YPImagePickerPermissionDeniedPopupCancel" = "ರದ್ದುಮಾಡಿ";
+"YPImagePickerPermissionDeniedPopupGrantPermission" = "Grant Permission";
+"YPImagePickerVideo" = "Video";
+"YPImagePickerCancel" = "ರದ್ದುಮಾಡಿ";
+"YPKeepRecording" = "Keep Recording";
+"preview" = "ಪ್ರಿವ್ಯೂ";
+"proceed" = "ಮುಂದುವರಿಸಿ";
+"restart" = "ಮತ್ತೆ ಪ್ರಾರಂಭಿಸಿ";
+"confirm_leave_recording_screen" = "ರೆಕಾರ್ಡಿಂಗ್ ಸ್ಕ್ರೀನ್ ಬಿಡಲು ನೀವು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ?";
+"resume_recording" = "ಇಲ್ಲ, ರೆಕಾರ್ಡಿಂಗ್ ಆಗುತ್ತಿರಲಿ";
+"recording_button_coachmark" = "ರೆಕಾರ್ಡಿಂಗ್ ಪ್ರಾರಂಭಿಸಲು ಇಲ್ಲಿ ಕ್ಲಿಕ್ ಮಾಡಿ";
+"recording_cancel_coachmark" = "ರೆಕಾರ್ಡಿಂಗ್ ಅನ್ನು ಮರುಪ್ರಾರಂಭಿಸಲು ಇಲ್ಲಿ ಕ್ಲಿಕ್ ಮಾಡಿ";
+"recording_paused_coachmark" = "ರೆಕಾರ್ಡಿಂಗ್ ಮುಂದುವರೆಸಲು ಇಲ್ಲಿ ಕ್ಲಿಕ್ ಮಾಡಿ";
+"save" = "ಸೇವ್";

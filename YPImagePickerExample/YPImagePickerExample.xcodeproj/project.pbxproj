@@ -62,6 +62,18 @@
 
 /* Begin PBXFileReference section */
 		3B0E1B9D207069630048E95B /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		554A69582552E0C200576AA2 /* te-IN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "te-IN"; path = "te-IN.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		554A695A2552E0C200576AA2 /* te-IN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "te-IN"; path = "te-IN.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		554A695B2552E0E600576AA2 /* ta-IN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ta-IN"; path = "ta-IN.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		554A695D2552E0E600576AA2 /* ta-IN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ta-IN"; path = "ta-IN.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		554A695E2552E0F900576AA2 /* bn-IN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "bn-IN"; path = "bn-IN.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		554A69602552E0F900576AA2 /* bn-IN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "bn-IN"; path = "bn-IN.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		554A69612552E10500576AA2 /* mr-IN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "mr-IN"; path = "mr-IN.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		554A69632552E10500576AA2 /* mr-IN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "mr-IN"; path = "mr-IN.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		554A69642552E11300576AA2 /* kn-IN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "kn-IN"; path = "kn-IN.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		554A69662552E11400576AA2 /* kn-IN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "kn-IN"; path = "kn-IN.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		554A69672552E14F00576AA2 /* hi-IN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "hi-IN"; path = "hi-IN.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		554A69692552E15000576AA2 /* hi-IN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "hi-IN"; path = "hi-IN.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		5F01F9DE20DCC5EA007432E4 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		71524A8C206FD954002F3162 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		991C0E5520567E1300764131 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -210,6 +222,12 @@
 				"zh-Hans",
 				"zh-Hant",
 				da,
+				"te-IN",
+				"ta-IN",
+				"bn-IN",
+				"mr-IN",
+				"kn-IN",
+				"hi-IN",
 			);
 			mainGroup = 994289FD1E7BE02400B765A9;
 			productRefGroup = 99428A071E7BE02400B765A9 /* Products */;
@@ -315,6 +333,12 @@
 			isa = PBXVariantGroup;
 			children = (
 				99428A131E7BE02400B765A9 /* Base */,
+				554A69582552E0C200576AA2 /* te-IN */,
+				554A695B2552E0E600576AA2 /* ta-IN */,
+				554A695E2552E0F900576AA2 /* bn-IN */,
+				554A69612552E10500576AA2 /* mr-IN */,
+				554A69642552E11300576AA2 /* kn-IN */,
+				554A69672552E14F00576AA2 /* hi-IN */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -336,6 +360,12 @@
 				5F01F9DE20DCC5EA007432E4 /* zh-Hans */,
 				DF1BD2FC216F8BE500330319 /* zh-Hant */,
 				EB0D6FC3252F1FDC006EE12E /* da */,
+				554A695A2552E0C200576AA2 /* te-IN */,
+				554A695D2552E0E600576AA2 /* ta-IN */,
+				554A69602552E0F900576AA2 /* bn-IN */,
+				554A69632552E10500576AA2 /* mr-IN */,
+				554A69662552E11400576AA2 /* kn-IN */,
+				554A69692552E15000576AA2 /* hi-IN */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
