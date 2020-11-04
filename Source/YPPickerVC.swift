@@ -301,7 +301,17 @@ open class YPPickerVC: YPBottomPager, YPBottomPagerDelegate {
         if let libraryVC = libraryVC {
             libraryVC.mediaManager.forseCancelExporting()
         }
+//        if let video = videoVC{
+//            video.didShowCancelAlert = { [weak self] showAlert in
+//                if showAlert {
+//
+//                }else{
+//                    self!.didClose?()
+//                }
+//            }
+//        }
         self.didClose?()
+        
     }
     
     // When pressing "Next"

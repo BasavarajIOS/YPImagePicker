@@ -51,6 +51,10 @@ public class YPLibraryVC: UIViewController, YPPermissionCheckable {
         mediaManager.initialize()
         mediaManager.v = v
 
+        if mediaManager.fetchResult != nil {
+            return
+        }
+        
         setupCollectionView()
         registerForLibraryChanges()
         panGestureHelper.registerForPanGesture(on: v)

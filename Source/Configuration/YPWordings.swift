@@ -14,10 +14,10 @@ public struct YPWordings {
     public var videoDurationPopup = VideoDurationPopup()
 
     public struct PermissionPopup {
-        public var title = ypLocalized("YPImagePickerPermissionDeniedPopupTitle")
-        public var message = ypLocalized("YPImagePickerPermissionDeniedPopupMessage")
-        public var cancel = ypLocalized("YPImagePickerPermissionDeniedPopupCancel")
-        public var grantPermission = ypLocalized("YPImagePickerPermissionDeniedPopupGrantPermission")
+        public var title = "YPImagePickerPermissionDeniedPopupTitle".localized
+        public var message = "YPImagePickerPermissionDeniedPopupMessage".localized
+        public var cancel = "YPImagePickerPermissionDeniedPopupCancel".localized
+        public var grantPermission = "YPImagePickerPermissionDeniedPopupGrantPermission".localized
     }
     
     public struct VideoDurationPopup {
@@ -28,7 +28,7 @@ public struct YPWordings {
     
     public var ok = ypLocalized("YPImagePickerOk")
     public var done = ypLocalized("YPImagePickerDone")
-    public var cancel = ypLocalized("YPImagePickerCancel")
+    public var cancel = "YPImagePickerCancel".localized
     public var save = ypLocalized("YPImagePickerSave")
     public var processing = ypLocalized("YPImagePickerProcessing")
     public var trim = ypLocalized("YPImagePickerTrim")
@@ -36,7 +36,7 @@ public struct YPWordings {
     public var albumsTitle = ypLocalized("YPImagePickerAlbums")
     public var libraryTitle = ypLocalized("YPImagePickerLibrary")
     public var cameraTitle = ypLocalized("YPImagePickerPhoto")
-    public var videoTitle = ypLocalized("YPImagePickerVideo")
+    public var videoTitle = "YPImagePickerVideo".localized
     public var next = ypLocalized("YPImagePickerNext")
     public var filter = ypLocalized("YPImagePickerFilter")
     public var crop = ypLocalized("YPImagePickerCrop")

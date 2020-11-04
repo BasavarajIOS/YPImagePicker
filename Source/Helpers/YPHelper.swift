@@ -44,7 +44,7 @@ struct YPHelper {
         v.alpha = 0.0
         v.backgroundColor = UIColor.clear
         v.layer.borderColor = UIColor.ypSecondaryLabel.cgColor
-        v.layer.borderWidth = 1.0
+        v.layer.borderWidth = 0.0
         v.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
     }
     

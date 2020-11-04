@@ -16,14 +16,14 @@ class YPVideoCaptureHelper: NSObject {
     public var isRecording: Bool { return videoOutput.isRecording }
     public var didCaptureVideo: ((URL) -> Void)?
     public var videoRecordingProgress: ((Float, TimeInterval) -> Void)?
-    
+    public var resetDate = true
     private let session = AVCaptureSession()
     private var timer = Timer()
     private var dateVideoStarted = Date()
     private let sessionQueue = DispatchQueue(label: "YPVideoVCSerialQueue")
     private var videoInput: AVCaptureDeviceInput?
     private var videoOutput = AVCaptureMovieFileOutput()
-    private var videoRecordingTimeLimit: TimeInterval = 0
+    public var videoRecordingTimeLimit: TimeInterval = 0
     private var isCaptureSessionSetup: Bool = false
     private var isPreviewSetup = false
     private var previewView: UIView!
@@ -191,6 +191,10 @@ class YPVideoCaptureHelper: NSObject {
                 if let orientation = orientation, connection.isVideoOrientationSupported {
                     connection.videoOrientation = orientation
                 }
+                let timeScale: Int32 = 30 // FPS
+                let maxDuration =
+                    CMTimeMakeWithSeconds(strongSelf.videoRecordingTimeLimit, preferredTimescale: timeScale)
+                strongSelf.videoOutput.maxRecordedDuration = maxDuration
                 strongSelf.videoOutput.startRecording(to: outputURL, recordingDelegate: strongSelf)
             }
         }
@@ -204,7 +208,7 @@ class YPVideoCaptureHelper: NSObject {
     
     private func setupCaptureSession() {
         session.beginConfiguration()
-        let aDevice = deviceForPosition(.back)
+        let aDevice = deviceForPosition(.front)
         if let d = aDevice {
             videoInput = try? AVCaptureDeviceInput(device: d)
         }
@@ -300,7 +304,9 @@ extension YPVideoCaptureHelper: AVCaptureFileOutputRecordingDelegate {
                                      selector: #selector(tick),
                                      userInfo: nil,
                                      repeats: true)
-        dateVideoStarted = Date()
+        if resetDate{
+            dateVideoStarted = Date()
+        }
     }
     
     public func fileOutput(_ captureOutput: AVCaptureFileOutput,

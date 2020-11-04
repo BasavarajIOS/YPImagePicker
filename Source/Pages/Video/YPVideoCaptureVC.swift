@@ -7,15 +7,26 @@
 //
 
 import UIKit
+import DPVideoMerger_Swift
+import AMPopTip
+import AVFoundation
 
 public class YPVideoCaptureVC: UIViewController, YPPermissionCheckable {
     
     public var didCaptureVideo: ((URL) -> Void)?
+    public var didShowCancelAlert: ((Bool) -> Void)?
     
     private let videoHelper = YPVideoCaptureHelper()
-    private let v = YPCameraView(overlayView: nil)
+//    private let v = YPCameraView(overlayView: nil)
+    private let v = KooVideoView()
     private var viewState = ViewState()
-    
+    var videoUrlPath = ""
+    var recordTime = 0.0
+    var saveButtonPressed = false
+    var previewButtonPressed = false
+    var videoCaptured = false
+    let popTip = PopTip()
+    let toolTipDuration = 3.0
     // MARK: - Init
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
@@ -23,11 +34,76 @@ public class YPVideoCaptureVC: UIViewController, YPPermissionCheckable {
     public required init() {
         super.init(nibName: nil, bundle: nil)
         title = YPConfig.wordings.videoTitle
+        self.popTip.textColor = UIColor(named: "YellowColor") ?? UIColor.yellow
+        self.popTip.bubbleColor = #colorLiteral(red: 0.2604471743, green: 0.2539715469, blue: 0.2975891531, alpha: 1)
+        self.popTip.shouldDismissOnTap = true
         videoHelper.didCaptureVideo = { [weak self] videoURL in
-            self?.didCaptureVideo?(videoURL)
-            self?.resetVisualState()
+//            self?.didCaptureVideo?(videoURL)
+            print(videoURL.path)
+            var createPath = FileManager.default.createVideoPath()
+            do{
+                try FileManager.default.moveItem(at: videoURL, to: URL(fileURLWithPath: createPath))
+            }catch{
+                createPath = videoURL.path
+            }
+            print(createPath)
+            if self?.videoUrlPath == ""{
+                self?.videoCaptured = true
+                self?.videoUrlPath = createPath
+                let secoundsGreaterThan3Secs = self!.recordTime < YPConfig.video.minimumTimeLimit
+                self?.v.previewView.isHidden = secoundsGreaterThan3Secs
+                if self!.recordTime == YPConfig.video.recordingTimeLimit {
+                    DispatchQueue.main.async {
+                        self?.previewButtonTapped()
+                        self!.updateState {
+                            $0.isRecording = false
+                            $0.isPaused = true
+                        }
+                    }
+                }
+                if self!.saveButtonPressed {
+                    self!.didCaptureVideo?(URL(fileURLWithPath: self!.videoUrlPath))
+                }
+                if self!.previewButtonPressed{
+                    self!.openEditController()
+                }
+            }else{
+                let oldURL = URL(fileURLWithPath: self!.videoUrlPath)
+                let newURL = URL(fileURLWithPath: createPath)
+                DPVideoMerger().mergeVideos(withFileURLs: [oldURL,newURL]) { (url, error) in
+                    if error == nil{
+                        if let mergedURL = url{
+                            self?.videoCaptured = true
+                            self?.videoUrlPath = mergedURL.path
+                            let secoundsGreaterThan3Secs = self!.recordTime < YPConfig.video.minimumTimeLimit
+                            self?.v.previewView.isHidden = secoundsGreaterThan3Secs
+                            if self!.recordTime == YPConfig.video.recordingTimeLimit {
+                                DispatchQueue.main.async {
+                                    self?.previewButtonTapped()
+                                    self!.updateState {
+                                        $0.isRecording = false
+                                        $0.isPaused = true
+                                    }
+                                }
+                            }
+                            if self!.saveButtonPressed {
+                                self!.didCaptureVideo?(URL(fileURLWithPath: self!.videoUrlPath))
+                            }
+                            if self!.previewButtonPressed{
+                                self!.openEditController()
+                            }
+                        }
+                        
+                    }
+                }
+            }
+//            self?.videoUrlPath = videoURL.path
+//            self?.resetVisualState()
         }
         videoHelper.videoRecordingProgress = { [weak self] progress, timeElapsed in
+            self?.recordTime = (self?.recordTime ?? 0.0) + 1.0
+            print("recording time :: \(self!.recordTime)")
+            print("recording progress :: \(progress)")
             self?.updateState {
                 $0.progress = progress
                 $0.timeElapsed = timeElapsed
@@ -52,27 +128,69 @@ public class YPVideoCaptureVC: UIViewController, YPPermissionCheckable {
         // Zoom
         let pinchRecongizer = UIPinchGestureRecognizer(target: self, action: #selector(self.pinch(_:)))
         v.previewViewContainer.addGestureRecognizer(pinchRecongizer)
+//        NotificationCenter.default.addObserver(self, selector: #selector(recordVideo), name: .kooVideoResume, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(pauseVideo), name: .kooVideoCancel, object: nil)
     }
-
+//    @objc func recordVideo(){
+//
+//    }
+//    @objc func pauseVideo(){
+//
+//    }
     func start() {
         v.shotButton.isEnabled = false
-        doAfterPermissionCheck { [weak self] in
-            guard let strongSelf = self else {
-                return
+        self.videoCaptured = false
+        self.saveButtonPressed = false
+        checkPermissionToAccessVideo { (granted) in
+            if granted{
+                self.videoHelper.start(previewView: self.v.previewViewContainer,
+                                        withVideoRecordingLimit: YPConfig.video.recordingTimeLimit,
+                                        completion: {
+                                            DispatchQueue.main.async {
+                                                self.v.shotButton.isEnabled = true
+                                                self.refreshState()
+                                            }
+                })
+            }else{
+                let alertController = UIAlertController(title: "Koo does not have access to your Camera/Microphone.To enable access, tap Settings and turn on Camera and Microphone.", message: "", preferredStyle: .alert)
+                       let action = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+                        
+                        self.dismiss(animated: true) {
+                            self.didCaptureVideo?(URL(fileURLWithPath: ""))
+                        }
+                       }
+                       let settingsAction = UIAlertAction(title: "Settings", style: .default) { (action) in
+                           if let redirectURL = URL(string:UIApplication.openSettingsURLString ){
+                               if UIApplication.shared.canOpenURL(redirectURL) {
+                                   UIApplication.shared.open(redirectURL)
+                               }else{
+                                   self.dismiss(animated: true, completion: nil)
+                               }
+                           }else{
+                               self.dismiss(animated: true, completion: nil)
+                           }
+                           
+                       }
+                       alertController.addAction(action)
+                       alertController.addAction(settingsAction)
+                       self.present(alertController, animated: true, completion: nil)
             }
-            self?.videoHelper.start(previewView: strongSelf.v.previewViewContainer,
-                                    withVideoRecordingLimit: YPConfig.video.recordingTimeLimit,
-                                    completion: {
-                                        DispatchQueue.main.async {
-                                            self?.v.shotButton.isEnabled = true
-                                            self?.refreshState()
-                                        }
-            })
         }
+//        doAfterPermissionCheck { [weak self] in
+//            guard let strongSelf = self else {
+//                return
+//            }
+//
+//        }
     }
     
     func refreshState() {
         // Init view state with video helper's state
+        if UserDefaults.standard.value(forKey: "recording_button_coachmark") == nil {
+            popTip.show(text: "recording_button_coachmark".localized, direction: .up, maxWidth: Utils.screenWidth, in: v.bottomView, from: v.shotButton.frame,duration: toolTipDuration)
+            UserDefaults.standard.set("Yes", forKey: "recording_button_coachmark")
+            UserDefaults.standard.synchronize()
+        }
         updateState {
             $0.isRecording = self.videoHelper.isRecording
             $0.flashMode = self.flashModeFrom(videoHelper: self.videoHelper)
@@ -84,15 +202,100 @@ public class YPVideoCaptureVC: UIViewController, YPPermissionCheckable {
     private func setupButtons() {
         v.flashButton.setImage(YPConfig.icons.flashOffIcon, for: .normal)
         v.flipButton.setImage(YPConfig.icons.loopIcon, for: .normal)
-        v.shotButton.setImage(YPConfig.icons.captureVideoImage, for: .normal)
+//        v.shotButton.setImage(YPConfig.icons.captureVideoImage, for: .normal)
     }
     
     private func linkButtons() {
         v.flashButton.addTarget(self, action: #selector(flashButtonTapped), for: .touchUpInside)
         v.shotButton.addTarget(self, action: #selector(shotButtonTapped), for: .touchUpInside)
+        v.retryButton.addTarget(self, action: #selector(retryButtonTapped), for: .touchUpInside)
+        v.previewButton.addTarget(self, action: #selector(previewButtonTapped), for: .touchUpInside)
         v.flipButton.addTarget(self, action: #selector(flipButtonTapped), for: .touchUpInside)
+        v.saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
+        
     }
     
+    // MARK: - Save Video
+    
+    @objc
+    func saveButtonTapped() {
+        saveButtonPressed = true
+        if videoHelper.isRecording {
+            self.shotButtonTapped()
+            if self.videoCaptured{
+                self.didCaptureVideo?(URL(fileURLWithPath: self.videoUrlPath))
+            }else{
+                self.showIndicator(withTitle: "", and: "")
+            }
+        }else{
+            if self.videoCaptured{
+                self.didCaptureVideo?(URL(fileURLWithPath: self.videoUrlPath))
+            }else{
+                self.showIndicator(withTitle: "", and: "")
+            }
+        }
+        
+    }
+    // MARK: - Retry Video
+    
+    @objc
+    func retryButtonTapped() {
+         if videoHelper.isRecording {
+                   self.shotButtonTapped()
+               }
+        let alert = UIAlertController(title: "Koo", message: "confirm_leave_recording_screen".localized, preferredStyle: .alert)
+        let noAction = UIAlertAction(title: "resume_recording".localized, style: .default) { (action) in
+            alert.dismiss(animated: true) {
+                self.shotButtonTapped()
+            }
+        }
+        let yesAction = UIAlertAction(title: "yes".localized, style: .default) { (action) in
+            alert.dismiss(animated: true, completion: nil)
+            self.resetVisualState()
+            
+        }
+        alert.addAction(yesAction)
+        alert.addAction(noAction)
+        self.present(alert, animated: true, completion: nil)
+    }
+    // MARK: - Preview Video
+    
+    @objc
+    func previewButtonTapped() {
+        self.previewButtonPressed = true
+        if videoHelper.isRecording {
+                   self.shotButtonTapped()
+               }
+        if self.videoCaptured{
+            self.openEditController()
+        }else{
+            self.showIndicator(withTitle: "", and: "")
+        }
+    }
+    //MARK: - Open Preview
+    func openEditController(){
+        guard UIVideoEditorController.canEditVideo(atPath: self.videoUrlPath) else {
+            print("Can't edit video at \(self.videoUrlPath)")
+            return
+        }
+        
+        //                let originalAsset = AVAsset(url:  URL(fileURLWithPath: self.videoUrlPath))
+        print("Presenting video editor...")
+        let vc = UIVideoEditorController()
+        vc.videoPath = self.videoUrlPath
+        let asset = AVAsset(url: URL(fileURLWithPath: self.videoUrlPath))
+        let secoundsInInt = asset.duration.seconds
+        var duration = 60.0
+        if secoundsInInt > duration {
+            duration = asset.duration.seconds
+        }
+        vc.videoMaximumDuration = duration
+        vc.videoQuality = UIImagePickerController.QualityType.typeMedium
+        vc.delegate = self
+        vc.modalPresentationStyle = .overFullScreen
+        self.present(vc, animated: true, completion: nil)
+        self.hideIndicator()
+    }
     // MARK: - Flip Camera
     
     @objc
@@ -124,8 +327,12 @@ public class YPVideoCaptureVC: UIViewController, YPPermissionCheckable {
     
     @objc
     func shotButtonTapped() {
-        doAfterPermissionCheck { [weak self] in
-            self?.toggleRecording()
+        if self.recordTime == YPConfig.video.recordingTimeLimit {
+            self.previewButtonTapped()
+        }else{
+            doAfterPermissionCheck { [weak self] in
+                self?.toggleRecording()
+            }
         }
     }
     
@@ -134,9 +341,13 @@ public class YPVideoCaptureVC: UIViewController, YPPermissionCheckable {
     }
     
     private func startRecording() {
+        self.videoCaptured = false
+        self.saveButtonPressed = false
+        videoHelper.videoRecordingTimeLimit = YPConfig.video.trimmerMaxDuration - recordTime
         videoHelper.startRecording()
         updateState {
             $0.isRecording = true
+            $0.isPaused = false
         }
     }
     
@@ -144,6 +355,7 @@ public class YPVideoCaptureVC: UIViewController, YPPermissionCheckable {
         videoHelper.stopRecording()
         updateState {
             $0.isRecording = false
+            $0.isPaused = true
         }
     }
 
@@ -195,6 +407,7 @@ public class YPVideoCaptureVC: UIViewController, YPPermissionCheckable {
     
     struct ViewState {
         var isRecording = false
+        var isPaused = false
         var flashMode = FlashMode.noFlash
         var progress: Float = 0
         var timeElapsed: TimeInterval = 0
@@ -214,22 +427,77 @@ public class YPVideoCaptureVC: UIViewController, YPPermissionCheckable {
             case .auto: return YPConfig.icons.flashAutoIcon
             }
         }
+        let secoundsGreaterThan3Secs = recordTime < YPConfig.video.minimumTimeLimit
+        if state.isPaused{
+            if UserDefaults.standard.value(forKey: "recording_paused_coachmark") == nil {
+                popTip.show(text: "recording_paused_coachmark".localized, direction: .up, maxWidth: Utils.screenWidth, in: v.bottomView, from: v.shotButton.frame,duration: toolTipDuration)
+                UserDefaults.standard.set("Yes", forKey: "recording_paused_coachmark")
+                UserDefaults.standard.synchronize()
+            }
+            v.previewView.isHidden = secoundsGreaterThan3Secs
+            if secoundsGreaterThan3Secs {
+                v.saveView.isHidden = true
+                v.retryView.isHidden = true
+            }else{
+                v.saveView.isHidden = false
+                v.retryView.isHidden = false
+            }
+        }else{
+            v.saveView.isHidden = secoundsGreaterThan3Secs
+            v.retryView.isHidden = secoundsGreaterThan3Secs
+//            v.previewView.isHidden = secoundsGreaterThan3Secs
+            if !secoundsGreaterThan3Secs {
+                if UserDefaults.standard.value(forKey: "recording_cancel_coachmark") == nil {
+                    popTip.show(text: "recording_cancel_coachmark".localized, direction: .up, maxWidth: Utils.screenWidth, in: v.bottomView, from: v.retryStackView.frame,duration: toolTipDuration)
+                    UserDefaults.standard.set("Yes", forKey: "recording_cancel_coachmark")
+                    UserDefaults.standard.synchronize()
+                }
+            }
+        }
         v.flashButton.setImage(flashImage(for: state.flashMode), for: .normal)
-        v.flashButton.isEnabled = !state.isRecording
-        v.flashButton.isHidden = state.flashMode == .noFlash
-        v.shotButton.setImage(state.isRecording ? YPConfig.icons.captureVideoOnImage : YPConfig.icons.captureVideoImage,
-                              for: .normal)
-        v.flipButton.isEnabled = !state.isRecording
-        v.progressBar.progress = state.progress
-        v.timeElapsedLabel.text = YPHelper.formattedStrigFrom(state.timeElapsed)
+        if state.isRecording {
+            v.flashButton.isHidden = true
+        }else{
+            v.flashButton.isHidden = state.flashMode == .noFlash
+        }
+//        v.flashButton.isEnabled = !state.isRecording
+        
+//        v.shotButton.setImage(state.isRecording ? YPConfig.icons.captureVideoOnImage : YPConfig.icons.captureVideoImage,
+//                              for: .normal)
+        if recordTime == 0.0{
+            v.shotRecordView.isHidden = false
+            v.shotPlayView.isHidden = true
+            v.shotLbl.isHidden = true
+        }else{
+            v.shotRecordView.isHidden = true
+            v.shotPlayView.isHidden = false
+            if state.isRecording {
+                v.shotPauseView.isHidden = false
+                v.shotLbl.isHidden = true
+            }else{
+                v.shotPauseView.isHidden = true
+                v.shotLbl.isHidden = false
+            }
+        }
+        
+        v.flipButton.isHidden = state.isRecording
+//        v.shotLbl.isHidden = !state.isRecording
+//        v.progressBar.progress = state.progress
+        let finalTime = YPConfig.video.trimmerMaxDuration - recordTime
+        v.timeElapsedLabel.text = YPHelper.formattedStrigFrom(finalTime)
+        v.timeElapsedLabel.isHidden = finalTime == YPConfig.video.trimmerMaxDuration
         
         // Animate progress bar changes.
-        UIView.animate(withDuration: 1, animations: v.progressBar.layoutIfNeeded)
+//        UIView.animate(withDuration: 1, animations: v.progressBar.layoutIfNeeded)
     }
     
     private func resetVisualState() {
+        recordTime = 0.0
+        self.videoUrlPath = ""
+        v.previewView.isHidden = true
         updateState {
             $0.isRecording = self.videoHelper.isRecording
+            $0.isPaused = false
             $0.flashMode = self.flashModeFrom(videoHelper: self.videoHelper)
             $0.progress = 0
             $0.timeElapsed = 0
@@ -248,5 +516,62 @@ public class YPVideoCaptureVC: UIViewController, YPPermissionCheckable {
         } else {
             return .noFlash
         }
+    }
+}
+extension YPVideoCaptureVC: UIVideoEditorControllerDelegate, UINavigationControllerDelegate {
+    public func videoEditorController(_ editor: UIVideoEditorController, didSaveEditedVideoToPath editedVideoPath: String) {
+        print("Result saved to path: \(editedVideoPath)")
+        DispatchQueue.global().asyncAfter(deadline: .now() + 1, execute: {
+            DispatchQueue.main.async {
+                KooVideosCollectionViewController.deleteAsset(at: editor.videoPath)
+            }
+        })
+        editor.dismiss(animated: true) {
+            let asset = AVAsset(url: URL(fileURLWithPath: editedVideoPath))
+            let secoundsInInt = Int(asset.duration.seconds)
+            self.recordTime = Double(secoundsInInt)
+            let finalTime = YPConfig.video.trimmerMaxDuration - Double(secoundsInInt)
+            self.v.timeElapsedLabel.text = YPHelper.formattedStrigFrom(finalTime)
+            self.v.timeElapsedLabel.isHidden = finalTime == YPConfig.video.trimmerMaxDuration
+            self.videoUrlPath = editedVideoPath
+//            if self.videoUrlPath == ""{
+//                self.videoUrlPath = editedVideoPath
+//            }else{
+//                let oldURL = URL(fileURLWithPath: self.videoUrlPath)
+//                let newURL = URL(fileURLWithPath: editedVideoPath)
+//                DPVideoMerger().mergeVideos(withFileURLs: [oldURL,newURL]) { (url, error) in
+//                    if error == nil{
+//                        if let mergedURL = url{
+//                            self.videoUrlPath = mergedURL.path
+//                        }
+//
+//                    }
+//                }
+//            }
+            
+        }
+//        let asset = AVAsset(url: URL(fileURLWithPath: editedVideoPath))
+        
+//        dismiss(animated:true, completion: {
+//        })
+    }
+    
+    public func videoEditorControllerDidCancel(_ editor: UIVideoEditorController) {
+        dismiss(animated:true)
+        DispatchQueue.global().asyncAfter(deadline: .now() + 1, execute: {
+            DispatchQueue.main.async {
+               // VideosCollectionViewController.deleteAsset(at: editor.videoPath)
+            }
+        })
+    }
+    
+    public func videoEditorController(_ editor: UIVideoEditorController, didFailWithError error: Error) {
+        print("an error occurred: \(error.localizedDescription)")
+        dismiss(animated:true)
+        DispatchQueue.global().asyncAfter(deadline: .now() + 1, execute: {
+            DispatchQueue.main.async {
+                KooVideosCollectionViewController.deleteAsset(at: editor.videoPath)
+            }
+        })
     }
 }

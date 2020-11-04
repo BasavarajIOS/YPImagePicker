@@ -34,11 +34,11 @@ extension YPPermissionCheckable where Self: UIViewController {
         case .authorized:
             block(true)
         case .restricted, .denied:
-            let popup = YPPermissionDeniedPopup()
-            let alert = popup.popup(cancelBlock: {
+//            let popup = YPPermissionDeniedPopup()
+//            let alert = popup.popup(cancelBlock: {
                 block(false)
-            })
-            present(alert, animated: true, completion: nil)
+//            })
+//            present(alert, animated: true, completion: nil)
         case .notDetermined:
             AVCaptureDevice.requestAccess(for: .video, completionHandler: { granted in
                 DispatchQueue.main.async {

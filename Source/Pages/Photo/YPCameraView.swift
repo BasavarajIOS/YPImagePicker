@@ -16,6 +16,8 @@ class YPCameraView: UIView, UIGestureRecognizerDelegate {
     let buttonsContainer = UIView()
     let flipButton = UIButton()
     let shotButton = UIButton()
+    let retryButton = UIButton()
+    let previewButton = UIButton()
     let flashButton = UIButton()
     let timeElapsedLabel = UILabel()
     let progressBar = UIProgressView()
@@ -33,7 +35,9 @@ class YPCameraView: UIView, UIGestureRecognizerDelegate {
                 flashButton,
                 flipButton,
                 buttonsContainer.sv(
-                    shotButton
+                    retryButton,
+                    shotButton,
+                    previewButton
                 )
             )
         } else {
@@ -45,7 +49,9 @@ class YPCameraView: UIView, UIGestureRecognizerDelegate {
                 flashButton,
                 flipButton,
                 buttonsContainer.sv(
-                    shotButton
+                    retryButton,
+                    shotButton,
+                    previewButton
                 )
             )
         }
@@ -94,7 +100,10 @@ class YPCameraView: UIView, UIGestureRecognizerDelegate {
         
         shotButton.centerVertically()
         shotButton.size(84).centerHorizontally()
-
+        |-(15+sideMargin)-retryButton.size(84).centerVertically()
+        previewButton.centerVertically()
+        previewButton.size(84)-(15+sideMargin)-|
+        
         // Style
         backgroundColor = YPConfig.colors.photoVideoScreenBackgroundColor
         previewViewContainer.backgroundColor = UIColor.ypLabel
@@ -111,5 +120,7 @@ class YPCameraView: UIView, UIGestureRecognizerDelegate {
         flashButton.setImage(YPConfig.icons.flashOffIcon, for: .normal)
         flipButton.setImage(YPConfig.icons.loopIcon, for: .normal)
         shotButton.setImage(YPConfig.icons.capturePhotoImage, for: .normal)
+        retryButton.setImage(YPConfig.icons.capturePhotoImage, for: .normal)
+        previewButton.setImage(YPConfig.icons.capturePhotoImage, for: .normal)
     }
 }
