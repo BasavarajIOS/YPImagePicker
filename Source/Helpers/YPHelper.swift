@@ -22,7 +22,7 @@ internal func imageFromBundle(_ named: String) -> UIImage {
     return UIImage(named: named, in: Bundle(for: YPPickerVC.self), compatibleWith: nil) ?? UIImage()
 }
 
-struct YPHelper {
+public struct YPHelper {
     static func changeBackButtonIcon(_ controller: UIViewController) {
         if YPConfig.icons.shouldChangeDefaultBackButtonIcon {
             let backButtonIcon = YPConfig.icons.backButtonIcon
