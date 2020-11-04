@@ -15,6 +15,7 @@ Pod::Spec.new do |s|
   s.dependency 'SteviaLayout', '~> 4.7.3'
   s.dependency 'PryntTrimmerView', '~> 4.0.2'
   s.dependency 'DPVideoMerger-Swift'
+  s.dependency 'AMPopTip'
   s.resources    = ['Resources/*', 'Source/**/*.xib']
   s.description  = "Instagram-like image picker & filters for iOS supporting videos and albums"
   s.swift_versions = ['3', '4.1', '4.2', '5.0', '5.1', '5.2', '5.3']
