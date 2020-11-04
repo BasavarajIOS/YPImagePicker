@@ -34,13 +34,13 @@ public class YPVideoCaptureVC: UIViewController, YPPermissionCheckable {
     public required init() {
         super.init(nibName: nil, bundle: nil)
         title = YPConfig.wordings.videoTitle
-        self.popTip.textColor = UIColor(named: "YellowColor") ?? UIColor.yellow
+        self.popTip.textColor = UIColor(red: 252/255, green: 210/255, blue: 82/255, alpha: 1)
         self.popTip.bubbleColor = #colorLiteral(red: 0.2604471743, green: 0.2539715469, blue: 0.2975891531, alpha: 1)
         self.popTip.shouldDismissOnTap = true
         videoHelper.didCaptureVideo = { [weak self] videoURL in
 //            self?.didCaptureVideo?(videoURL)
             print(videoURL.path)
-            var createPath = FileManager.default.createVideoPath()
+            var createPath = FileManager.default.createKooCreateVideoPath()
             do{
                 try FileManager.default.moveItem(at: videoURL, to: URL(fileURLWithPath: createPath))
             }catch{
@@ -574,4 +574,10 @@ extension YPVideoCaptureVC: UIVideoEditorControllerDelegate, UINavigationControl
             }
         })
     }
+}
+
+extension FileManager {
+  func createKooCreateVideoPath() -> String {
+      return URL(fileURLWithPath: ((FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last)?.path)!).appendingPathComponent("\(UUID().uuidString).mp4").path
+  }
 }
