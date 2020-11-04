@@ -228,13 +228,15 @@ public class YPVideoCaptureVC: UIViewController, YPPermissionCheckable {
             if self.videoCaptured{
                 self.didCaptureVideo?(URL(fileURLWithPath: self.videoUrlPath))
             }else{
-                self.showIndicator(withTitle: "", and: "")
+                //self.showIndicator(withTitle: "", and: "")
+                NotificationCenter.default.post(name: NSNotification.Name("showIndicator"), object: nil)
             }
         }else{
             if self.videoCaptured{
                 self.didCaptureVideo?(URL(fileURLWithPath: self.videoUrlPath))
             }else{
-                self.showIndicator(withTitle: "", and: "")
+               // self.showIndicator(withTitle: "", and: "")
+                NotificationCenter.default.post(name: NSNotification.Name("showIndicator"), object: nil)
             }
         }
         
@@ -272,7 +274,8 @@ public class YPVideoCaptureVC: UIViewController, YPPermissionCheckable {
         if self.videoCaptured{
             self.openEditController()
         }else{
-            self.showIndicator(withTitle: "", and: "")
+           // self.showIndicator(withTitle: "", and: "")
+           NotificationCenter.default.post(name: NSNotification.Name("showIndicator"), object: nil)
         }
     }
     //MARK: - Open Preview
@@ -297,7 +300,8 @@ public class YPVideoCaptureVC: UIViewController, YPPermissionCheckable {
         vc.delegate = self
         vc.modalPresentationStyle = .overFullScreen
         self.present(vc, animated: true, completion: nil)
-        self.hideIndicator()
+       // self.hideIndicator()
+        NotificationCenter.default.post(name: NSNotification.Name("hideIndicator"), object: nil)
     }
     // MARK: - Flip Camera
     
