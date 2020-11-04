@@ -60,7 +60,7 @@ struct YPHelper {
         })
     }
     
-    static func formattedStrigFrom(_ timeInterval: TimeInterval) -> String {
+    static public func formattedStrigFrom(_ timeInterval: TimeInterval) -> String {
         let interval = Int(timeInterval)
         let seconds = interval % 60
         let minutes = (interval / 60) % 60
