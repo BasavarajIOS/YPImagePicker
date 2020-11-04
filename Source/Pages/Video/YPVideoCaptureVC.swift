@@ -27,6 +27,9 @@ public class YPVideoCaptureVC: UIViewController, YPPermissionCheckable {
     var videoCaptured = false
     let popTip = PopTip()
     let toolTipDuration = 3.0
+    public var screenWidth: CGFloat {
+        return UIScreen.main.bounds.width
+    }
     // MARK: - Init
     
     public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
@@ -187,7 +190,7 @@ public class YPVideoCaptureVC: UIViewController, YPPermissionCheckable {
     func refreshState() {
         // Init view state with video helper's state
         if UserDefaults.standard.value(forKey: "recording_button_coachmark") == nil {
-            popTip.show(text: "recording_button_coachmark".localized, direction: .up, maxWidth: Utils.screenWidth, in: v.bottomView, from: v.shotButton.frame,duration: toolTipDuration)
+            popTip.show(text: "recording_button_coachmark".localized, direction: .up, maxWidth: screenWidth, in: v.bottomView, from: v.shotButton.frame,duration: toolTipDuration)
             UserDefaults.standard.set("Yes", forKey: "recording_button_coachmark")
             UserDefaults.standard.synchronize()
         }
@@ -430,7 +433,7 @@ public class YPVideoCaptureVC: UIViewController, YPPermissionCheckable {
         let secoundsGreaterThan3Secs = recordTime < YPConfig.video.minimumTimeLimit
         if state.isPaused{
             if UserDefaults.standard.value(forKey: "recording_paused_coachmark") == nil {
-                popTip.show(text: "recording_paused_coachmark".localized, direction: .up, maxWidth: Utils.screenWidth, in: v.bottomView, from: v.shotButton.frame,duration: toolTipDuration)
+                popTip.show(text: "recording_paused_coachmark".localized, direction: .up, maxWidth: screenWidth, in: v.bottomView, from: v.shotButton.frame,duration: toolTipDuration)
                 UserDefaults.standard.set("Yes", forKey: "recording_paused_coachmark")
                 UserDefaults.standard.synchronize()
             }
@@ -448,7 +451,7 @@ public class YPVideoCaptureVC: UIViewController, YPPermissionCheckable {
 //            v.previewView.isHidden = secoundsGreaterThan3Secs
             if !secoundsGreaterThan3Secs {
                 if UserDefaults.standard.value(forKey: "recording_cancel_coachmark") == nil {
-                    popTip.show(text: "recording_cancel_coachmark".localized, direction: .up, maxWidth: Utils.screenWidth, in: v.bottomView, from: v.retryStackView.frame,duration: toolTipDuration)
+                    popTip.show(text: "recording_cancel_coachmark".localized, direction: .up, maxWidth: screenWidth, in: v.bottomView, from: v.retryStackView.frame,duration: toolTipDuration)
                     UserDefaults.standard.set("Yes", forKey: "recording_cancel_coachmark")
                     UserDefaults.standard.synchronize()
                 }
@@ -523,7 +526,7 @@ extension YPVideoCaptureVC: UIVideoEditorControllerDelegate, UINavigationControl
         print("Result saved to path: \(editedVideoPath)")
         DispatchQueue.global().asyncAfter(deadline: .now() + 1, execute: {
             DispatchQueue.main.async {
-                KooVideosCollectionViewController.deleteAsset(at: editor.videoPath)
+                self.deleteAsset(at: editor.videoPath)
             }
         })
         editor.dismiss(animated: true) {
@@ -570,10 +573,20 @@ extension YPVideoCaptureVC: UIVideoEditorControllerDelegate, UINavigationControl
         dismiss(animated:true)
         DispatchQueue.global().asyncAfter(deadline: .now() + 1, execute: {
             DispatchQueue.main.async {
-                KooVideosCollectionViewController.deleteAsset(at: editor.videoPath)
+                self.deleteAsset(at: editor.videoPath)
             }
         })
     }
+    
+    func deleteAsset(at path: String) {
+          do {
+              try FileManager.default.removeItem(at: URL(fileURLWithPath: path))
+              print("Deleted asset file at: \(path)")
+          } catch {
+              print("Failed to delete assete file at: \(path).")
+              print("\(error)")
+          }
+      }
 }
 
 extension FileManager {
