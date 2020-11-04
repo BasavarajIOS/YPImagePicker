@@ -42,3 +42,9 @@ public struct YPWordings {
     public var crop = ypLocalized("YPImagePickerCrop")
     public var warningMaxItemsLimit = ypLocalized("YPImagePickerWarningItemsLimit")
 }
+
+extension String {
+    var localized: String {
+        return NSLocalizedString(self, tableName: "Localizable", comment: self)
+    }
+}
