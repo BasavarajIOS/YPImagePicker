@@ -20,3 +20,14 @@
 "YPImagePickerVideoTooLong" = "Pick a video less than %@ seconds long";
 "YPImagePickerVideoTooShort" = "The video must be at least %@ seconds";
 "YPImagePickerWarningItemsLimit" = "The limit is %d photos or videos";
+
+"save" = "Save";
+"YPKeepRecording" = "Keep Recording";
+"preview" = "Preview";
+"proceed" = "Proceed";
+"restart" = "Restart";
+"confirm_leave_recording_screen" = "Are you sure you want to leave the recording screen?";
+"resume_recording" = "No, Keep recording";
+"recording_button_coachmark" = "Click here to start recording";
+"recording_cancel_coachmark" = "Click here to restart recording";
+"recording_paused_coachmark" = "Click here to continue recording";

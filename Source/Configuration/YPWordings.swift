@@ -45,6 +45,10 @@ public struct YPWordings {
 
 extension String {
     var localized: String {
-        return NSLocalizedString(self, tableName: "YPImagePickerLocalizable", comment: self)
+        return NSLocalizedString(self,
+                                 tableName: "YPImagePickerLocalizable",
+                                 bundle: Bundle(for: YPPickerVC.self),
+                                 value: "",
+                                 comment: "")
     }
 }
