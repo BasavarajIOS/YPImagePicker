@@ -45,10 +45,9 @@ public struct YPWordings {
 
 extension String {
     var localized: String {
-        print("Bundle(for: YPPickerVC.self) \(Bundle(for: YPPickerVC.self))")
         return NSLocalizedString(self,
-                                 tableName: "YPImagePickerLocalizable",
-                                 bundle: Bundle(for: YPPickerVC.self),
+                                 tableName: "Localizable_KooVoice",
+                                 bundle: Bundle(identifier: "com.koo.app")!,
                                  value: "",
                                  comment: "")
     }
