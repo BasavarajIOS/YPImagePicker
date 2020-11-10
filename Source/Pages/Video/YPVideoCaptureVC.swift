@@ -250,9 +250,8 @@ public class YPVideoCaptureVC: UIViewController, YPPermissionCheckable {
                }
         let alert = UIAlertController(title: "Koo", message: "confirm_leave_recording_screen".localized, preferredStyle: .alert)
         let noAction = UIAlertAction(title: "resume_recording".localized, style: .default) { (action) in
-            alert.dismiss(animated: true) {
+            alert.dismiss(animated: true, completion: nil)
                 self.shotButtonTapped()
-            }
         }
         let yesAction = UIAlertAction(title: "yes".localized, style: .default) { (action) in
             alert.dismiss(animated: true, completion: nil)
