@@ -26,16 +26,16 @@ class YPGridView: UIView {
         
         let stroke: CGFloat = 0.5
         line1.top(0).width(stroke).bottom(0)
-        line1.Right == 33 % Right
+        line1.SteviaRight == 33 % SteviaRight
         
         line2.top(0).width(stroke).bottom(0)
-        line2.Right == 66 % Right
+        line2.SteviaRight == 66 % SteviaRight
         
         line3.left(0).height(stroke).right(0)
-        line3.Bottom == 33 % Bottom
+        line3.SteviaBottom == 33 % SteviaBottom
         
         line4.left(0).height(stroke).right(0)
-        line4.Bottom == 66 % Bottom
+        line4.SteviaBottom == 66 % SteviaBottom
         
         let color = UIColor.white.withAlphaComponent(0.6)
         line1.backgroundColor = color

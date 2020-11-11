@@ -33,8 +33,8 @@ public class YPSelectionsGalleryCell: UICollectionViewCell {
         imageView.fillContainer()
         editIcon.size(32).left(12).bottom(12)
         editSquare.size(16)
-        editSquare.CenterY == editIcon.CenterY
-        editSquare.CenterX == editIcon.CenterX
+        editSquare.SteviaCenterY == editIcon.SteviaCenterY
+        editSquare.SteviaCenterX == editIcon.SteviaCenterX
         
         removeButton.top(12).trailing(12)
         
