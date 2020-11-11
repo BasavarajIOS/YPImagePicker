@@ -298,9 +298,9 @@ public class YPVideoCaptureVC: UIViewController, YPPermissionCheckable {
         vc.videoQuality = UIImagePickerController.QualityType.typeMedium
         vc.delegate = self
         vc.modalPresentationStyle = .overFullScreen
-        self.present(vc, animated: true, completion: nil)
-       // self.hideIndicator()
         NotificationCenter.default.post(name: NSNotification.Name("hideIndicator"), object: nil)
+        self.present(vc, animated: true, completion: nil)
+       // self.hideIndicator()        
     }
     // MARK: - Flip Camera
     
