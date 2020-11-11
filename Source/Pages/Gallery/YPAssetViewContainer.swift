@@ -82,7 +82,7 @@ class YPAssetViewContainer: UIView {
             sv(squareCropButton)
             squareCropButton.size(42)
             |-15-squareCropButton
-            squareCropButton.Bottom == zoomableView!.Bottom - 15
+            squareCropButton.SteviaBottom == zoomableView!.SteviaBottom - 15
         }
         
         // Multiple selection button
@@ -90,7 +90,7 @@ class YPAssetViewContainer: UIView {
         multipleSelectionButton.size(42)
         multipleSelectionButton-15-|
         multipleSelectionButton.setImage(YPConfig.icons.multipleSelectionOffIcon, for: .normal)
-        multipleSelectionButton.Bottom == zoomableView!.Bottom - 15
+        multipleSelectionButton.SteviaBottom == zoomableView!.SteviaBottom - 15
         
     }
     

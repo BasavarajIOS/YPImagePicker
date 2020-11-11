@@ -54,7 +54,7 @@ final class YPLibraryView: UIView {
         // Layout
         |maxNumberWarningView|.bottom(0)
         if #available(iOS 11.0, *) {
-            maxNumberWarningView.Top == safeAreaLayoutGuide.Bottom - 40
+            maxNumberWarningView.SteviaTop == safeAreaLayoutGuide.SteviaBottom - 40
             maxNumberWarningLabel.centerHorizontally().top(11)
         } else {
             maxNumberWarningView.height(40)
@@ -74,8 +74,8 @@ final class YPLibraryView: UIView {
         )
         
         progressView.height(5)
-        progressView.Top == line.Top
-        progressView.Width == line.Width
+        progressView.SteviaTop == line.SteviaTop
+        progressView.SteviaWidth == line.SteviaWidth
         progressView.progressViewStyle = .bar
         progressView.trackTintColor = YPConfig.colors.progressBarTrackColor
         progressView.progressTintColor = YPConfig.colors.progressBarCompletedColor ?? YPConfig.colors.tintColor

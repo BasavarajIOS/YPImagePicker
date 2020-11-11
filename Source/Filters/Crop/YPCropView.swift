@@ -44,13 +44,13 @@ class YPCropView: UIView {
         )
         |toolbar|
         if #available(iOS 11.0, *) {
-            toolbar.Bottom == safeAreaLayoutGuide.Bottom
+            toolbar.SteviaBottom == safeAreaLayoutGuide.SteviaBottom
         } else {
             toolbar.bottom(0)
         }
         
         let r: CGFloat = CGFloat(1.0 / ratio)
-        cropArea.Height == cropArea.Width * r
+        cropArea.SteviaHeight == cropArea.SteviaWidth * r
         cropArea.centerVertically()
         
         // Fit image differently depnding on its ratio.
@@ -61,14 +61,14 @@ class YPCropView: UIView {
             imageView.width(image.size.width * scaledDownRatio )
             imageView.centerInContainer()
         } else if ratio < imageRatio {
-            imageView.Height == cropArea.Height
+            imageView.SteviaHeight == cropArea.SteviaHeight
             imageView.centerInContainer()
         } else {
             imageView.followEdges(cropArea)
         }
         
         // Fit imageView to image's bounds
-        imageView.Width == imageView.Height * CGFloat(imageRatio)
+        imageView.SteviaWidth == imageView.SteviaHeight * CGFloat(imageRatio)
     }
     
     private func applyStyle() {
