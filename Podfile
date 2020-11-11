@@ -4,7 +4,7 @@ workspace 'YPImagePicker.xcworkspace'
 
 target 'YPImagePicker' do
   # Comment the next line if you don't want to use dynamic frameworks
-  use_frameworks!
+#  use_frameworks!
   workspace 'YPImagePicker.xcworkspace'
   #project './YPImagePicker.xcodeproj'
      
