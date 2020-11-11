@@ -53,47 +53,47 @@ public class YPVideoCaptureVC: UIViewController, YPPermissionCheckable {
             if self?.videoUrlPath == ""{
                 self?.videoCaptured = true
                 self?.videoUrlPath = createPath
-                let secoundsGreaterThan3Secs = self!.recordTime < YPConfig.video.minimumTimeLimit
+                let secoundsGreaterThan3Secs = self?.recordTime < YPConfig.video.minimumTimeLimit
                 self?.v.previewView.isHidden = secoundsGreaterThan3Secs
-                if self!.recordTime == YPConfig.video.recordingTimeLimit {
+                if self?.recordTime == YPConfig.video.recordingTimeLimit {
                     DispatchQueue.main.async {
                         self?.previewButtonTapped()
-                        self!.updateState {
+                        self?.updateState {
                             $0.isRecording = false
                             $0.isPaused = true
                         }
                     }
                 }
-                if self!.saveButtonPressed {
-                    self!.didCaptureVideo?(URL(fileURLWithPath: self!.videoUrlPath))
+                if self?.saveButtonPressed {
+                    self?.didCaptureVideo?(URL(fileURLWithPath: self?.videoUrlPath))
                 }
-                if self!.previewButtonPressed{
-                    self!.openEditController()
+                if self?.previewButtonPressed{
+                    self?.openEditController()
                 }
             }else{
-                let oldURL = URL(fileURLWithPath: self!.videoUrlPath)
+                let oldURL = URL(fileURLWithPath: self?.videoUrlPath)
                 let newURL = URL(fileURLWithPath: createPath)
-                DPVideoMerger().mergeVideos(withFileURLs: [oldURL,newURL]) { (url, error) in
+                DPVideoMerger().mergeVideos(withFileURLs: [oldURL,newURL]) { [weak self] (url, error) in
                     if error == nil{
                         if let mergedURL = url{
                             self?.videoCaptured = true
                             self?.videoUrlPath = mergedURL.path
-                            let secoundsGreaterThan3Secs = self!.recordTime < YPConfig.video.minimumTimeLimit
+                            let secoundsGreaterThan3Secs = self?.recordTime < YPConfig.video.minimumTimeLimit
                             self?.v.previewView.isHidden = secoundsGreaterThan3Secs
-                            if self!.recordTime == YPConfig.video.recordingTimeLimit {
+                            if self?.recordTime == YPConfig.video.recordingTimeLimit {
                                 DispatchQueue.main.async {
                                     self?.previewButtonTapped()
-                                    self!.updateState {
+                                    self?.updateState {
                                         $0.isRecording = false
                                         $0.isPaused = true
                                     }
                                 }
                             }
-                            if self!.saveButtonPressed {
-                                self!.didCaptureVideo?(URL(fileURLWithPath: self!.videoUrlPath))
+                            if self?.saveButtonPressed {
+                                self?.didCaptureVideo?(URL(fileURLWithPath: self?.videoUrlPath))
                             }
-                            if self!.previewButtonPressed{
-                                self!.openEditController()
+                            if self?.previewButtonPressed{
+                                self?.openEditController()
                             }
                         }
                         
@@ -300,7 +300,7 @@ public class YPVideoCaptureVC: UIViewController, YPPermissionCheckable {
         vc.modalPresentationStyle = .overFullScreen
         NotificationCenter.default.post(name: NSNotification.Name("hideIndicator"), object: nil)
         self.present(vc, animated: true, completion: nil)
-       // self.hideIndicator()        
+       // self.hideIndicator()
     }
     // MARK: - Flip Camera
     
