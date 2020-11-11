@@ -12,6 +12,7 @@ Pod::Spec.new do |s|
   s.requires_arc     = true
   s.ios.deployment_target = "12.0"
   s.source_files = 'Source/**/*.swift'
+  s.dependency 'SteviaLayout', '~> 4.7.3'
   s.dependency 'PryntTrimmerView', '~> 4.0.2'
   s.dependency 'DPVideoMerger-Swift'
   s.dependency 'AMPopTip'
