@@ -167,7 +167,11 @@ public class YPVideoCaptureVC: UIViewController, YPPermissionCheckable {
                        let settingsAction = UIAlertAction(title: "Settings", style: .default) { (action) in
                            if let redirectURL = URL(string:UIApplication.openSettingsURLString ){
                                if UIApplication.shared.canOpenURL(redirectURL) {
-                                   UIApplication.shared.open(redirectURL)
+                                if #available(iOS 10.0, *) {
+                                    UIApplication.shared.open(redirectURL)
+                                } else {
+                                    // Fallback on earlier versions
+                                }
                                }else{
                                    self.dismiss(animated: true, completion: nil)
                                }
