@@ -42,6 +42,7 @@ public class YPVideoCaptureVC: UIViewController, YPPermissionCheckable {
         self.popTip.shouldDismissOnTap = true
         videoHelper.didCaptureVideo = { [weak self] videoURL in
 //            self?.didCaptureVideo?(videoURL)
+            guard let weakSelf = self else { return  }
             print(videoURL.path)
             var createPath = FileManager.default.createKooCreateVideoPath()
             do{
@@ -50,50 +51,51 @@ public class YPVideoCaptureVC: UIViewController, YPPermissionCheckable {
                 createPath = videoURL.path
             }
             print(createPath)
-            if self?.videoUrlPath == ""{
-                self?.videoCaptured = true
-                self?.videoUrlPath = createPath
-                let secoundsGreaterThan3Secs = self?.recordTime < YPConfig.video.minimumTimeLimit
-                self?.v.previewView.isHidden = secoundsGreaterThan3Secs
-                if self?.recordTime == YPConfig.video.recordingTimeLimit {
+            if weakSelf.videoUrlPath == ""{
+                weakSelf.videoCaptured = true
+                weakSelf.videoUrlPath = createPath
+                let secoundsGreaterThan3Secs = weakSelf.recordTime < YPConfig.video.minimumTimeLimit
+                weakSelf.v.previewView.isHidden = secoundsGreaterThan3Secs
+                if weakSelf.recordTime == YPConfig.video.recordingTimeLimit {
                     DispatchQueue.main.async {
-                        self?.previewButtonTapped()
-                        self?.updateState {
+                        weakSelf.previewButtonTapped()
+                        weakSelf.updateState {
                             $0.isRecording = false
                             $0.isPaused = true
                         }
                     }
                 }
-                if self?.saveButtonPressed {
-                    self?.didCaptureVideo?(URL(fileURLWithPath: self?.videoUrlPath))
+                if weakSelf.saveButtonPressed {
+                    weakSelf.didCaptureVideo?(URL(fileURLWithPath: weakSelf.videoUrlPath))
                 }
-                if self?.previewButtonPressed{
-                    self?.openEditController()
+                if weakSelf.previewButtonPressed{
+                    weakSelf.openEditController()
                 }
             }else{
-                let oldURL = URL(fileURLWithPath: self?.videoUrlPath)
+                let oldURL = URL(fileURLWithPath: weakSelf.videoUrlPath)
                 let newURL = URL(fileURLWithPath: createPath)
                 DPVideoMerger().mergeVideos(withFileURLs: [oldURL,newURL]) { [weak self] (url, error) in
+                    guard let weakSelf = self else { return  }
                     if error == nil{
                         if let mergedURL = url{
-                            self?.videoCaptured = true
-                            self?.videoUrlPath = mergedURL.path
-                            let secoundsGreaterThan3Secs = self?.recordTime < YPConfig.video.minimumTimeLimit
-                            self?.v.previewView.isHidden = secoundsGreaterThan3Secs
-                            if self?.recordTime == YPConfig.video.recordingTimeLimit {
+                            weakSelf.videoCaptured = true
+                            weakSelf.videoUrlPath = mergedURL.path
+                            let secoundsGreaterThan3Secs = weakSelf.recordTime < YPConfig.video.minimumTimeLimit
+                            weakSelf.v.previewView.isHidden = secoundsGreaterThan3Secs
+                            if weakSelf.recordTime == YPConfig.video.recordingTimeLimit {
                                 DispatchQueue.main.async {
-                                    self?.previewButtonTapped()
-                                    self?.updateState {
+                                    weakSelf.previewButtonTapped()
+                                    weakSelf.updateState {
                                         $0.isRecording = false
                                         $0.isPaused = true
                                     }
                                 }
                             }
-                            if self?.saveButtonPressed {
-                                self?.didCaptureVideo?(URL(fileURLWithPath: self?.videoUrlPath))
+                            if weakSelf.saveButtonPressed {
+                                weakSelf.didCaptureVideo?(URL(fileURLWithPath: weakSelf.videoUrlPath))
                             }
-                            if self?.previewButtonPressed{
-                                self?.openEditController()
+                            if weakSelf.previewButtonPressed{
+                                weakSelf.openEditController()
                             }
                         }
                         
