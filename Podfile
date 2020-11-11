@@ -7,7 +7,7 @@ target 'YPImagePicker' do
   #project './YPImagePicker.xcodeproj'
      
   # Pods for YPImagePicker
-  pod "SteviaLayout", "4.7.3"
+#  pod "SteviaLayout", "4.7.3"
   pod "PryntTrimmerView", "4.0.2"
   pod "DPVideoMerger-Swift"
   pod "AMPopTip"
