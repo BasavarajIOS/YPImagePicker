@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Stevia
 
 protocol YPBottomPagerDelegate: class {
     func pagerScrollViewDidScroll(_ scrollView: UIScrollView)
