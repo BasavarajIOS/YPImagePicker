@@ -27,6 +27,7 @@ public class YPVideoCaptureVC: UIViewController, YPPermissionCheckable {
     var videoCaptured = false
     let popTip = PopTip()
     let toolTipDuration = 3.0
+    var showIndicatorAdded = false
     public var screenWidth: CGFloat {
         return UIScreen.main.bounds.width
     }
@@ -106,6 +107,10 @@ public class YPVideoCaptureVC: UIViewController, YPPermissionCheckable {
 //            self?.resetVisualState()
         }
         videoHelper.videoRecordingProgress = { [weak self] progress, timeElapsed in
+            if let showIndicator = self?.showIndicatorAdded, showIndicator {
+                self?.showIndicatorAdded = false
+                NotificationCenter.default.post(name: NSNotification.Name("hideIndicator"), object: nil)
+            }
             self?.recordTime = (self?.recordTime ?? 0.0) + 1.0
             print("recording time :: \(self!.recordTime)")
             print("recording progress :: \(progress)")
@@ -349,6 +354,10 @@ public class YPVideoCaptureVC: UIViewController, YPPermissionCheckable {
     }
     
     private func startRecording() {
+        if recordTime == 0.0 {
+            showIndicatorAdded = true
+            NotificationCenter.default.post(name: NSNotification.Name("showIndicator"), object: nil)
+        }
         self.videoCaptured = false
         self.saveButtonPressed = false
         videoHelper.videoRecordingTimeLimit = YPConfig.video.trimmerMaxDuration - recordTime
