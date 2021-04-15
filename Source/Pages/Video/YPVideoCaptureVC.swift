@@ -110,6 +110,7 @@ public class YPVideoCaptureVC: UIViewController, YPPermissionCheckable {
             if let showIndicator = self?.showIndicatorAdded, showIndicator {
                 self?.showIndicatorAdded = false
                 NotificationCenter.default.post(name: NSNotification.Name("hideIndicator"), object: nil)
+                self?.v.shotButton.isUserInteractionEnabled = true
             }
             self?.recordTime = (self?.recordTime ?? 0.0) + 1.0
             print("recording time :: \(self!.recordTime)")
@@ -356,6 +357,7 @@ public class YPVideoCaptureVC: UIViewController, YPPermissionCheckable {
     private func startRecording() {
         if recordTime == 0.0 {
             showIndicatorAdded = true
+            v.shotButton.isUserInteractionEnabled = false
             NotificationCenter.default.post(name: NSNotification.Name("showIndicator"), object: nil)
         }
         self.videoCaptured = false
