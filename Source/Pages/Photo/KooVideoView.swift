@@ -52,7 +52,13 @@ class KooVideoView: UIView {
         bunble.loadNibNamed("KooVideoView", owner: self, options: nil)
         addSubview(self.containerView)
         self.containerView.isOpaque = false
-        self.containerView.backgroundColor = UIColor.white
+        if self.traitCollection.userInterfaceStyle == .dark {
+            // User Interface is Dark
+            self.containerView.backgroundColor = UIColor.black
+        } else {
+            // User Interface is Light
+            self.containerView.backgroundColor = UIColor.white
+        }
         self.containerView.frame = self.bounds
         self.containerView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         self.shotLbl.text = "proceed".localized
