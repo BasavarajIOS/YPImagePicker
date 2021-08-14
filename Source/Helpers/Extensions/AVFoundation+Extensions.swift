@@ -76,6 +76,6 @@ func toggledPositionForDevice(_ device: AVCaptureDevice) -> AVCaptureDevice.Posi
 
 func flippedDeviceInputForInput(_ input: AVCaptureDeviceInput) -> AVCaptureDeviceInput? {
     let p = toggledPositionForDevice(input.device)
-    let aDevice = deviceForPosition(p)
-    return try? AVCaptureDeviceInput(device: aDevice!)
+    guard let aDevice = deviceForPosition(p) else { return nil }
+    return try? AVCaptureDeviceInput(device: aDevice)
 }
